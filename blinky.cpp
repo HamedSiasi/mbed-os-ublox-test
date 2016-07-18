@@ -61,36 +61,36 @@ static void checkCpu()
 {
     uint32_t x = 0x01234567;
 
-    printf("\n*** Printing stuff of interest about the CPU.\n");
+    printf("\n*** Printing stuff of interest about the CPU.\r\n");
     if ((*(uint8_t *) &x) == 0x67)
     {
-        printf("Little endian.\n");
+        printf("Little endian.\r\n");
     }
     else
     {
-        printf("Big endian.\n");
+        printf("Big endian.\r\n");
     }
 
     // Read the system control block
     // CPU ID register
-    printf("CPUID: 0x%08lx.\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS));
+    printf("CPUID: 0x%08lx.\r\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS));
     // Interrupt control and state register
-    printf("ICSR: 0x%08lx.\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 1));
+    printf("ICSR: 0x%08lx.\r\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 1));
     // VTOR is not there, skip it
     // Application interrupt and reset control register
-    printf("AIRCR: 0x%08lx.\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 3));
+    printf("AIRCR: 0x%08lx.\r\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 3));
     // SCR is not there, skip it
     // Configuration and control register
-    printf("CCR: 0x%08lx.\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 5));
+    printf("CCR: 0x%08lx.\r\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 5));
     // System handler priority register 2
-    printf("SHPR2: 0x%08lx.\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 6));
+    printf("SHPR2: 0x%08lx.\r\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 6));
     // System handler priority register 3
-    printf("SHPR3: 0x%08lx.\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 7));
+    printf("SHPR3: 0x%08lx.\r\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 7));
     // System handler control and status register
-    printf("SHCSR: 0x%08lx.\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 8));
+    printf("SHCSR: 0x%08lx.\r\n", *(SYSTEM_CONTROL_BLOCK_START_ADDRESS + 8));
 
-    printf("Last stack entry was at 0x%08lx.\n", (uint32_t) &x);
-    printf("A static variable is at 0x%08lx.\n", (uint32_t) &gFlipper);
+    printf("Last stack entry was at 0x%08lx.\r\n", (uint32_t) &x);
+    printf("A static variable is at 0x%08lx.\r\n", (uint32_t) &gFlipper);
 }
 
 // Check how much RAM can be malloc'ed
@@ -204,37 +204,36 @@ int main(void)
     uint32_t * pMem;
     uint32_t * pRamResult;
 
-    //usb.baud (115200);
     usb.baud (9600);
 
     checkCpu();
 
-    printf("*** Checking heap size available.\n");
+    printf("*** Checking heap size available.\r\n");
     memorySize = checkHeapSize();
 
-    printf("    %d byte(s) available.\n", memorySize);
+    printf("    %d byte(s) available.\r\n", memorySize);
 
     if (memorySize >= sizeof (uint32_t))
     {
         pMem = (uint32_t *) malloc(memorySize);
-        printf("*** Checking available heap RAM, from 0x%08lx to 0x%08lx.\n", (uint32_t) pMem, (uint32_t) pMem + memorySize);
-        printf("    (the last variable pushed onto the stack is at 0x%08lx, MSP is at 0x%08lx, errno is %d).\n", (uint32_t) &pRamResult, __get_MSP(), errno);
+        printf("*** Checking available heap RAM, from 0x%08lx to 0x%08lx.\r\n", (uint32_t) pMem, (uint32_t) pMem + memorySize);
+        printf("    (the last variable pushed onto the stack is at 0x%08lx, MSP is at 0x%08lx, errno is %d).\r\n", (uint32_t) &pRamResult, __get_MSP(), errno);
         if (pMem != NULL)
         {
             pRamResult = checkRam(pMem, memorySize);
             if (pRamResult != NULL)
             {
-                printf("!!! RAM check failure at location 0x%08lx (contents 0x%08lx).\n", (uint32_t) pRamResult, *pRamResult);
+                printf("!!! RAM check failure at location 0x%08lx (contents 0x%08lx).\r\n", (uint32_t) pRamResult, *pRamResult);
                 while(1) {};
             }
         }
         else
         {
-            printf("!!! Unable to malloc() %d byte(s).\n", memorySize);
+            printf("!!! Unable to malloc() %d byte(s).\r\n", memorySize);
         }
     }
 
-    printf("*** Running us_ticker at 100 usecond intervals for 2 seconds...\n");
+    printf("*** Running us_ticker at 100 usecond intervals for 2 seconds...\r\n");
 
     /* Use a usecond delay function to check-out the us_ticker at high speed for a little while */
     gFlipper.attach_us(&flip, 100);
@@ -243,7 +242,7 @@ int main(void)
 
     gFlipper.attach_us(NULL, 0);
 
-    printf("*** Echoing received characters forever.\n");
+    printf("*** Echoing received characters forever.\r\n");
 
     while (1)
     {
