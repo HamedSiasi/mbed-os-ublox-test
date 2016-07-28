@@ -197,22 +197,19 @@ static void flip()
 // PUBLIC FUNCTIONS
 // ----------------------------------------------------------------
 
+
+/*
 int main(void)
 {
     Serial usb (USBTX, USBRX);
     size_t memorySize;
     uint32_t * pMem;
     uint32_t * pRamResult;
-
     usb.baud (9600);
-
     checkCpu();
-
     printf("*** Checking heap size available.\r\n");
     memorySize = checkHeapSize();
-
     printf("    %d byte(s) available.\r\n", memorySize);
-
     if (memorySize >= sizeof (uint32_t))
     {
         pMem = (uint32_t *) malloc(memorySize);
@@ -232,18 +229,11 @@ int main(void)
             printf("!!! Unable to malloc() %d byte(s).\r\n", memorySize);
         }
     }
-
     printf("*** Running us_ticker at 100 usecond intervals for 2 seconds...\r\n");
-
-    /* Use a usecond delay function to check-out the us_ticker at high speed for a little while */
     gFlipper.attach_us(&flip, 100);
-
     wait(2);
-
     gFlipper.attach_us(NULL, 0);
-
     printf("*** Echoing received characters forever.\r\n");
-
     while (1)
     {
         if (usb.readable() && usb.writeable())
@@ -252,6 +242,6 @@ int main(void)
             usb.putc(c);
         }
     }
-    
     return -1;
 }
+*/
